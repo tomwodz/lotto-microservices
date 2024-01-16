@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/eureka/eureka.iml" filepath="$PROJECT_DIR$/eureka/eureka.iml" />
       <module fileurl="file://$PROJECT_DIR$/gateway/gateway.iml" filepath="$PROJECT_DIR$/gateway/gateway.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/lotto-microservices.iml" filepath="$PROJECT_DIR$/.idea/lotto-microservices.iml" />
+      <module fileurl="file://$PROJECT_DIR$/numbergenerator/numbergenerator.iml" filepath="$PROJECT_DIR$/numbergenerator/numbergenerator.iml" />
     </modules>
   </component>
 </project>
