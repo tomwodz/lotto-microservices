@@ -2,6 +2,7 @@ package pl.tomwodz.numbergenerator.domain;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import pl.tomwodz.numbergenerator.domain.dto.CriteriaForGenerateNumbersConfigurationProperties;
 import pl.tomwodz.numbergenerator.infrastructure.proxy.DrawDateGeneratorProxy;
 
 
@@ -10,7 +11,15 @@ class NumberGeneratorConfiguration {
 
     @Bean
     public NumberGeneratorFacade numberGeneratorFacade(WinningNumbersRepository winningNumbersRepository,
-                                                       DrawDateGeneratorProxy drawDateGeneratorProxy
-    ) {return new NumberGeneratorFacade(winningNumbersRepository, drawDateGeneratorProxy);
+                                                       NumberRandomGeneratorRepository numberRandomGeneratorRepository,
+                                                       DrawDateGeneratorProxy drawDateGeneratorProxy,
+                                                       CriteriaForGenerateNumbersConfigurationProperties criteria
+    ) {
+        WinningNumbersFactory winningNumbersFactory = new WinningNumbersFactory();
+        return new NumberGeneratorFacade(winningNumbersRepository,
+                numberRandomGeneratorRepository,
+                drawDateGeneratorProxy,
+                winningNumbersFactory,
+                criteria);
     }
 }

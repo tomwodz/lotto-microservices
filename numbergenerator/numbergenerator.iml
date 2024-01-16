@@ -134,6 +134,7 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-context:6.1.2" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-expression:6.1.2" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.data:spring-data-commons:3.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-configuration-processor:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-actuator:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-actuator-autoconfigure:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-actuator:3.2.1" level="project" />

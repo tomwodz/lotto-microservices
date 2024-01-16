@@ -3,11 +3,13 @@ package pl.tomwodz.numbergenerator.domain;
 import feign.FeignException;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import pl.tomwodz.numbergenerator.domain.dto.CriteriaForGenerateNumbersConfigurationProperties;
 import pl.tomwodz.numbergenerator.domain.dto.DrawDateResponseDto;
 import pl.tomwodz.numbergenerator.domain.dto.WinningNumbersDto;
 import pl.tomwodz.numbergenerator.infrastructure.proxy.DrawDateGeneratorProxy;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -15,12 +17,20 @@ import java.util.Set;
 public class NumberGeneratorFacade {
 
     private final WinningNumbersRepository winningNumbersRepository;
+    private final NumberRandomGeneratorRepository numberGeneratorRepository;
     private final DrawDateGeneratorProxy drawDateGeneratorClient;
+    private final WinningNumbersFactory winningNumbersFactory;
+    private final CriteriaForGenerateNumbersConfigurationProperties criteria;
 
     public WinningNumbersDto generateWinningNumbers() {
-        getNextDrawDate();
-        return NumberGeneratorMapper.mapFromWinningNumbersToWinningNumbersDto(
-                new WinningNumbers(Set.of(1,2,3,4,5,6), LocalDateTime.now())); //TODO
+        LocalDateTime nextDrawDate = getNextDrawDate();
+        //TODO connect to service
+        Set<Integer> winningGenerateNumbers = numberGeneratorRepository.generateSixRandomNumbers(criteria);
+        //TODO add new class / validatorFacade.validationWinningNumbers(winningGenerateNumbers);
+        WinningNumbers winningNumbers = winningNumbersFactory
+                .mapFromWinningNumbersDtoToWinningNumbers(winningGenerateNumbers, nextDrawDate);
+        WinningNumbers winningNumbersSaved = saveWinningNumber(winningNumbers);
+        return NumberGeneratorMapper.mapFromWinningNumbersToWinningNumbersDto(winningNumbersSaved);
     }
 
     private WinningNumbers saveWinningNumber(WinningNumbers winningNumbers){
@@ -47,10 +57,12 @@ public class NumberGeneratorFacade {
         try {
             DrawDateResponseDto drawDateResponseDto = drawDateGeneratorClient.getNextDrawDate();
             log.info(drawDateResponseDto.dateDraw());
+            return LocalDateTime.parse(drawDateResponseDto.dateDraw(),
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         } catch (FeignException.FeignClientException exception){
             log.warn("drawDateGeneratorClient error: " + exception.getMessage());
         }
-        return LocalDateTime.now();
+        return LocalDateTime.now(); //TODO
     }
 
 }
